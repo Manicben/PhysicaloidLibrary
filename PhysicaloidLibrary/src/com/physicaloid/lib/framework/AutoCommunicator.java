@@ -20,7 +20,9 @@ import android.hardware.usb.UsbDevice;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import com.physicaloid.lib.UsbVidList;
+
+import com.physicaloid.lib.UsbSerialDevice;
+import com.physicaloid.lib.UsbVid;
 import com.physicaloid.lib.bluetooth.driver.uart.UartBluetooth;
 import com.physicaloid.lib.usb.UsbAccessor;
 import com.physicaloid.lib.usb.driver.uart.UartCdcAcm;
@@ -82,23 +84,27 @@ public class AutoCommunicator {
                         for(UsbDevice device : usbAccess.manager().getDeviceList().values()) {
                                 int vid = device.getVendorId();
                                 int pid = device.getProductId();
-                                for(UsbVidList usbVid : UsbVidList.values()) {
-                                        if(vid == usbVid.getVid()) {
-                                                if(vid == UsbVidList.FTDI.getVid()) {
-                                                        Log.d(TAG, "FTDI");
-                                                        sc = new UartFtdi(context);
-                                                } else if(vid == UsbVidList.CP210X.getVid()) {
-                                                        Log.d(TAG, "CP210x");
-                                                        sc = new UartCp210x(context);
-                                                } else if((vid == UsbVidList.DCCDUINO.getVid()) || (vid == UsbVidList.WCH.getVid())) {
-                                                         Log.d(TAG, "POSSIBLY WCH");
-                                                       // check PID
-                                                        if(pid == 0x5523 || pid == 0x7523) {
-                                                              Log.d(TAG, "Yes WCH!");
-                                                                sc = new UartWinCH34x(context);
-                                                        }
-                                                }
-                                        }
+                                UsbSerialDevice serialDevice = UsbSerialDevice.idsToUsbSerialDevice(vid, pid);
+
+                                switch (serialDevice.getDriver()) {
+                                        case UsbSerialDevice.Driver.FTDI:
+                                                Log.d(TAG, "FTDI");
+                                                sc = new UartFtdi(context);
+                                                break;
+                                        case UsbSerialDevice.Driver.CP210X:
+                                                Log.d(TAG, "CP210x");
+                                                sc = new UartCp210x(context);
+                                                break;
+                                        case UsbSerialDevice.Driver.WINCH34X:
+                                                Log.d(TAG, "WINCH34x");
+                                                sc = new UartWinCH34x(context);
+                                                break;
+                                        case UsbSerialDevice.Driver.CDCADM:
+                                                Log.d(TAG, "CDC-ACM");
+                                                sc = new UartCdcAcm(context);
+                                                break;
+                                        default:
+                                                break;
                                 }
                         }
                         if(sc == null) {

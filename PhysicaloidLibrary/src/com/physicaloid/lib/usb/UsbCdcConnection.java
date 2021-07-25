@@ -24,6 +24,7 @@ import android.hardware.usb.UsbInterface;
 import android.util.Log;
 import android.util.SparseArray;
 import com.physicaloid.BuildConfig;
+import com.physicaloid.lib.UsbSerialDevice;
 
 public class UsbCdcConnection {
 
@@ -31,8 +32,13 @@ public class UsbCdcConnection {
         private static final String TAG = UsbCdcConnection.class.getSimpleName();
         private UsbAccessor mUsbAccess;
         private int mCdcAcmInterfaceNum;
+        private int vid;
         private int pid;
         SparseArray<UsbCdcConnectionEp> mUsbConnectionEp;
+
+        public int getVID() {
+                return vid;
+        }
 
         public int getPID() {
                 return pid;
@@ -115,6 +121,9 @@ public class UsbCdcConnection {
                                                                                 if(mCdcAcmInterfaceNum < 0) {
                                                                                         mCdcAcmInterfaceNum = 0;
                                                                                 }
+                                                                                vid = usbdev.getVendorId();
+                                                                                pid = usbdev.getProductId();
+
                                                                                 return true;
                                                                         }
                                                                 }

@@ -17,7 +17,6 @@
 package com.physicaloid.lib.framework;
 
 import android.content.Context;
-import com.physicaloid.lib.usb.driver.uart.ReadLisener;
 import com.physicaloid.lib.usb.driver.uart.ReadListener;
 import com.physicaloid.lib.usb.driver.uart.UartConfig;
 
@@ -104,6 +103,12 @@ public abstract class SerialCommunicator {
     abstract public boolean setDtrRts(boolean dtrOn, boolean rtsOn);
 
     /**
+     * Sets DTR control line automatically based on UsbSerialDevice
+     * @return true : successful, false : fail
+     */
+    abstract public boolean setAutoDtr();
+
+    /**
      * Gets Uart configurations
      * @return UART configurations
      */
@@ -152,13 +157,6 @@ public abstract class SerialCommunicator {
     abstract public void addReadListener(ReadListener listener);
 
     /**
-     * Adds read listener
-     * @param listener ReadListener
-     */
-    @Deprecated
-    abstract public void addReadListener(ReadLisener listener);
-
-    /**
      * Clears read listener
      */
     abstract public void clearReadListener();
@@ -195,4 +193,8 @@ public abstract class SerialCommunicator {
      * @param flag true to turn on debugging.
      */
     abstract public void setDebug(boolean flag);
+
+    abstract public int getVID();
+
+    abstract public int getPID();
 }

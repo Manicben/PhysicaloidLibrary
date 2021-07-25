@@ -1,7 +1,8 @@
 apply plugin: 'android-library'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation("com.google.guava:guava:30.1.1-android")
 }
 
 android {

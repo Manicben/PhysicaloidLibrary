@@ -10,8 +10,8 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import com.physicaloid.BuildConfig;
 import com.physicaloid.lib.Physicaloid;
+import com.physicaloid.lib.UsbSerialDevice;
 import com.physicaloid.lib.framework.SerialCommunicator;
-import com.physicaloid.lib.usb.driver.uart.ReadLisener;
 import com.physicaloid.lib.usb.driver.uart.ReadListener;
 import com.physicaloid.lib.usb.driver.uart.UartConfig;
 import com.physicaloid.misc.RingBuffer;
@@ -344,6 +344,11 @@ public class UartWifi extends SerialCommunicator {
                 return true;
         }
 
+        @Override
+        public boolean setAutoDtr() {
+                return true;
+        }
+
         //////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////
@@ -444,13 +449,6 @@ public class UartWifi extends SerialCommunicator {
         }
 
         @Override
-        @Deprecated
-        public void addReadListener(ReadLisener listener) {
-                addReadListener((ReadListener)listener);
-        }
-
-
-        @Override
         public void clearReadListener() {
                 uartReadListenerList.clear();
         }
@@ -544,5 +542,15 @@ public class UartWifi extends SerialCommunicator {
         @Override
         public void setDebug(boolean flag) {
                 DEBUG_SHOW = flag;
+        }
+
+        @Override
+        public int getVID() {
+                return 0;
+        }
+
+        @Override
+        public int getPID() {
+                return 0;
         }
 }

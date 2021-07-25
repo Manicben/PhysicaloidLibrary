@@ -22,7 +22,6 @@ import com.physicaloid.lib.framework.AutoCommunicator;
 import com.physicaloid.lib.framework.SerialCommunicator;
 import com.physicaloid.lib.framework.Uploader;
 import com.physicaloid.lib.programmer.avr.UploadErrors;
-import com.physicaloid.lib.usb.driver.uart.ReadLisener;
 import com.physicaloid.lib.usb.driver.uart.ReadListener;
 import com.physicaloid.lib.usb.driver.uart.UartConfig;
 import java.io.File;
@@ -273,16 +272,6 @@ public class Physicaloid {
         }
 
         /**
-         * Adds read listener
-         *
-         * @param listener ReadListener
-         * @return true : successful , false : fail
-         * @throws RuntimeException
-         */
-        public boolean addReadListener(ReadLisener listener) throws RuntimeException {
-                return addReadListener((ReadListener) listener);
-        }
-        /**
          * Clears read listener
          *
          * @throws RuntimeException
@@ -504,7 +493,8 @@ public class Physicaloid {
                 mUploadThread.interrupt();
         }
 
-        /**
+
+    /**
          * Callbacks of program process<br> normal process:<br> onPreUpload() ->
          * onUploading -> onPostUpload<br> cancel:<br> onPreUpload() ->
          * onUploading -> onCancel -> onPostUpload<br> error:<br> onPreUpload
@@ -634,6 +624,20 @@ public class Physicaloid {
                 }
         }
 
+        /**
+         * Sets DTR control line automatically based on UsbSerialDevice
+         *
+         * @return true : successful, false : fail
+         */
+        public boolean setAutoDtr() throws RuntimeException {
+                synchronized(LOCK) {
+                        if(mSerial == null) {
+                                return false;
+                        }
+                        return mSerial.setAutoDtr();
+                }
+        }
+
         public String getDriverName() {
                 if(mSerial == null) {
                         return "None";
@@ -657,5 +661,18 @@ public class Physicaloid {
                 if(mSerial != null) {
                         mSerial.setDebug(flag);
                 }
+        }
+        public int getVID() {
+                if(mSerial == null) {
+                        return 0;
+                }
+                return mSerial.getVID();
+        }
+
+        public int getPID() {
+                if(mSerial == null) {
+                        return 0;
+                }
+                return mSerial.getPID();
         }
 }

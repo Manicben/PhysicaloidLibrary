@@ -9,9 +9,10 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbRequest;
 import android.util.Log;
-import com.physicaloid.BuildConfig;
+
 import com.physicaloid.lib.Physicaloid;
-import com.physicaloid.lib.UsbVidList;
+import com.physicaloid.lib.UsbSerialDevice;
+import com.physicaloid.lib.UsbVid;
 import com.physicaloid.lib.framework.SerialCommunicator;
 import com.physicaloid.lib.usb.UsbCdcConnection;
 import com.physicaloid.lib.usb.UsbVidPid;
@@ -19,7 +20,6 @@ import com.physicaloid.misc.RingBuffer;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import android.hardware.usb.UsbConstants;
 
 public class UartWinCH34x extends SerialCommunicator {
         /* supported VID,PID
@@ -31,7 +31,7 @@ public class UartWinCH34x extends SerialCommunicator {
         private static final String TAG = UartWinCH34x.class.getSimpleName();
         private boolean DEBUG_SHOW = false;
         private static final int DEFAULT_BAUDRATE = 9600;
-        private UsbCdcConnection mUsbConnetionManager;
+        private UsbCdcConnection mUsbConnectionManager;
         private UartConfig mUartConfig;
         private static final int RING_BUFFER_SIZE = 1024;
         private static final int USB_READ_BUFFER_SIZE = 256;
@@ -91,7 +91,7 @@ public class UartWinCH34x extends SerialCommunicator {
                 super(context);
                 // default to n81
                 lcr = CH341_LCR_ENABLE_RX | CH341_LCR_ENABLE_TX | CH341_LCR_CS8;
-                mUsbConnetionManager = new UsbCdcConnection(context);
+                mUsbConnectionManager = new UsbCdcConnection(context);
                 mUartConfig = new UartConfig();
                 mUartConfig.baudrate = DEFAULT_BAUDRATE;
                 mBuffer = new RingBuffer(RING_BUFFER_SIZE);
@@ -100,7 +100,7 @@ public class UartWinCH34x extends SerialCommunicator {
 
         @Override
         public boolean open() {
-                for(UsbVidList id : UsbVidList.values()) {
+                for(UsbVid id : UsbVid.values()) {
                         if((id.getVid() == 0x4348) || (id.getVid() == 0x1a86)) {
                                 if(open(new UsbVidPid(id.getVid(), 0))) {
                                         return true;
@@ -111,11 +111,11 @@ public class UartWinCH34x extends SerialCommunicator {
         }
 
         public boolean open(UsbVidPid ids) {
-                if(mUsbConnetionManager.open(ids)) {
+                if(mUsbConnectionManager.open(ids)) {
                         Log.d(TAG, "Opening WCH");
-                        mConnection = mUsbConnetionManager.getConnection();
-                        mEndpointIn = mUsbConnetionManager.getEndpointIn();
-                        mEndpointOut = mUsbConnetionManager.getEndpointOut();
+                        mConnection = mUsbConnectionManager.getConnection();
+                        mEndpointIn = mUsbConnectionManager.getEndpointIn();
+                        mEndpointOut = mUsbConnectionManager.getEndpointOut();
                         if(!init()) {
                                 return false;
                         }
@@ -133,7 +133,7 @@ public class UartWinCH34x extends SerialCommunicator {
         public boolean close() {
                 stopRead();
                 isOpened = false;
-                return mUsbConnetionManager.close();
+                return mUsbConnectionManager.close();
         }
 
         @Override
@@ -513,6 +513,16 @@ public class UartWinCH34x extends SerialCommunicator {
         }
 
         @Override
+        public boolean setAutoDtr() {
+                UsbSerialDevice serialDevice = UsbSerialDevice.idsToUsbSerialDevice(
+                        mUsbConnectionManager.getVID(),
+                        mUsbConnectionManager.getPID()
+                );
+                Log.d(TAG, "Setting DTR automatically to " + serialDevice.getDtr() + " for VID: " + serialDevice.getVid() + " PID: " + serialDevice.getPid());
+                return setDtrRts(serialDevice.getDtr(), false);
+        }
+
+        @Override
         public UartConfig getUartConfig() {
                 return mUartConfig;
         }
@@ -563,12 +573,6 @@ public class UartWinCH34x extends SerialCommunicator {
         }
 
         @Override
-        @Deprecated
-        public void addReadListener(ReadLisener listener) {
-                addReadListener((ReadListener) listener);
-        }
-
-        @Override
         public void clearReadListener() {
                 uartReadListenerList.clear();
         }
@@ -606,5 +610,15 @@ public class UartWinCH34x extends SerialCommunicator {
         @Override
         public void setDebug(boolean flag) {
                 DEBUG_SHOW = flag;
+        }
+
+        @Override
+        public int getVID() {
+                return mUsbConnectionManager.getVID();
+        }
+
+        @Override
+        public int getPID() {
+                return mUsbConnectionManager.getPID();
         }
 }

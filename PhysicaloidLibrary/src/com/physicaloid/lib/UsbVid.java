@@ -16,7 +16,11 @@
 
 package com.physicaloid.lib;
 
-public enum UsbVidList {
+import java.util.HashMap;
+import java.util.Map;
+
+public enum UsbVid {
+    UNKNOWN                         (0),
     ARDUINO                         (0x2341),
     DCCDUINO                        (0x1A86),
     FTDI                            (0x0403),
@@ -25,14 +29,37 @@ public enum UsbVidList {
     MBED_FRDM_KL25Z_OPENSDA_PORT    (0x1357),
     MBED_FRDM_KL25Z_KL25Z_PORT      (0x15a2),
     WCH                             (0x4348),
-    CP210X                          (0x10C4);
+    CP210X                          (0x10C4),
+    SPARKFUN                        (0x1B4F),
+    ADAFRUIT                        (0x239A),
+    RASPBERRY                       (0x2e8a);
 
-    int vid;
-    private UsbVidList(int vid) {
+    private final int vid;
+
+    UsbVid(int vid) {
         this.vid = vid;
     }
 
     public int getVid() {
         return vid;
+    }
+
+    private static final Map<Integer, UsbVid> vidToUsbVidMapping = new HashMap<>();
+
+    static {
+        for(UsbVid usbVid : UsbVid.values()) {
+            vidToUsbVidMapping.put(
+                 usbVid.getVid(),
+                 usbVid
+            );
+        }
+    }
+
+    public static UsbVid vidToUsbVid(int vid) {
+        UsbVid usbVid = vidToUsbVidMapping.get(vid);
+        if(usbVid != null) {
+            return usbVid;
+        }
+        return UNKNOWN;
     }
 }

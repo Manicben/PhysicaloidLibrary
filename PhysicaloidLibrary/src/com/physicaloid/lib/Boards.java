@@ -75,7 +75,7 @@ public enum Boards {
         this.text           = text;
     }
 
-    public class ChipTypes {
+    public static class ChipTypes {
         // chip number distance is 30
         // AVR
         public static final int M8                      = 1;
@@ -95,7 +95,7 @@ public enum Boards {
         public static final int PHYSICALOID_CYCLONE    = 61;
     }
 
-    public class UploadProtocols {
+    public static class UploadProtocols {
         // protocol number distance is 30
         // AVR
         public static final int STK500                      = 1;    // Arduino Uno
@@ -109,7 +109,7 @@ public enum Boards {
         public static final int ALTERA_FPGA_RBF             = 61;    // Physicaloid RBF Configuration
     }
 
-    public class ComProtocols {
+    public static class ComProtocols {
         public static final int UART            = 1;
         public static final int I2C             = 2;
         public static final int SPI             = 3;

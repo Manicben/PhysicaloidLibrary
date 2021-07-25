@@ -27,9 +27,10 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbRequest;
 import android.util.Log;
-import com.physicaloid.BuildConfig;
+
 import com.physicaloid.lib.Physicaloid;
-import com.physicaloid.lib.UsbVidList;
+import com.physicaloid.lib.UsbSerialDevice;
+import com.physicaloid.lib.UsbVid;
 import com.physicaloid.lib.framework.SerialCommunicator;
 import com.physicaloid.lib.usb.UsbCdcConnection;
 import com.physicaloid.lib.usb.UsbVidPid;
@@ -43,7 +44,7 @@ public class UartFtdi extends SerialCommunicator {
         private static final String TAG = UartFtdi.class.getSimpleName();
         private boolean DEBUG_SHOW = false;
         private static final int DEFAULT_BAUDRATE = 9600;
-        private UsbCdcConnection mUsbConnetionManager;
+        private UsbCdcConnection mUsbConnectionManager;
         private UartConfig mUartConfig;
         private static final int RING_BUFFER_SIZE = 1024;
         private static final int USB_WRITE_BUFFER_SIZE = 2;
@@ -141,7 +142,7 @@ public class UartFtdi extends SerialCommunicator {
 
         public UartFtdi(Context context) {
                 super(context);
-                mUsbConnetionManager = new UsbCdcConnection(context);
+                mUsbConnectionManager = new UsbCdcConnection(context);
                 mReadThreadStop = true;
                 mUartConfig = new UartConfig();
                 mBuffer = new RingBuffer(RING_BUFFER_SIZE);
@@ -149,10 +150,10 @@ public class UartFtdi extends SerialCommunicator {
         }
 
         public boolean open(UsbVidPid ids) {
-                if(mUsbConnetionManager.open(ids)) {
-                        mConnection = mUsbConnetionManager.getConnection();
-                        mEndpointIn = mUsbConnetionManager.getEndpointIn();
-                        mEndpointOut = mUsbConnetionManager.getEndpointOut();
+                if(mUsbConnectionManager.open(ids)) {
+                        mConnection = mUsbConnectionManager.getConnection();
+                        mEndpointIn = mUsbConnectionManager.getEndpointIn();
+                        mEndpointOut = mUsbConnectionManager.getEndpointOut();
                         //pid = mUsbConnetionManager.getPID();
                         if(!init()) {
                                 return false;
@@ -170,7 +171,7 @@ public class UartFtdi extends SerialCommunicator {
 
         @Override
         public boolean open() {
-                for(UsbVidList id : UsbVidList.values()) {
+                for(UsbVid id : UsbVid.values()) {
                         if(id.getVid() == 0x0403) {
                                 if(open(new UsbVidPid(id.getVid(), 0))) {
                                         return true;
@@ -204,10 +205,10 @@ public class UartFtdi extends SerialCommunicator {
 
         @Override
         public boolean close() {
-                if(mUsbConnetionManager != null) {
+                if(mUsbConnectionManager != null) {
                         stopRead();
                         isOpened = false;
-                        return mUsbConnetionManager.close();
+                        return mUsbConnectionManager.close();
                 }
                 return true;
         }
@@ -389,7 +390,7 @@ public class UartFtdi extends SerialCommunicator {
 
         @Override
         public boolean setBaudrate(int baudrate) {
-                if(mUsbConnetionManager == null) {
+                if(mUsbConnectionManager == null) {
                         return false;
                 }
                 int divfrac[] = {0, 3, 2, 4, 1, 5, 6, 7};
@@ -398,7 +399,7 @@ public class UartFtdi extends SerialCommunicator {
                 int divisor3;
                 divisor3 = 48000000 / 2 / baudrate; // divisor shifted 3 bits to the left
 
-                if(mUsbConnetionManager.getPID() == FT232AM) {
+                if(mUsbConnectionManager.getPID() == FT232AM) {
                         if((divisor3 & 0x7) == 7) {
                                 divisor3++; // round x.7/8 up to x+1
                         }
@@ -447,7 +448,7 @@ public class UartFtdi extends SerialCommunicator {
 
         @Override
         public boolean setDataBits(int dataBits) {
-                if(mUsbConnetionManager == null) {
+                if(mUsbConnectionManager == null) {
                         return false;
                 }
                 int s = ((mUartConfig.stopBits) << 11) | ((mUartConfig.parity) << 8) | dataBits;
@@ -464,7 +465,7 @@ public class UartFtdi extends SerialCommunicator {
 
         @Override
         public boolean setParity(int parity) {
-                if(mUsbConnetionManager == null) {
+                if(mUsbConnectionManager == null) {
                         return false;
                 }
                 int s = ((mUartConfig.stopBits) << 11) | ((parity) << 8) | mUartConfig.dataBits;
@@ -481,7 +482,7 @@ public class UartFtdi extends SerialCommunicator {
 
         @Override
         public boolean setStopBits(int stopBits) {
-                if(mUsbConnetionManager == null) {
+                if(mUsbConnectionManager == null) {
                         return false;
                 }
                 int s = ((stopBits) << 11) | ((mUartConfig.parity) << 8) | mUartConfig.dataBits;
@@ -498,7 +499,7 @@ public class UartFtdi extends SerialCommunicator {
 
         @Override
         public boolean setDtrRts(boolean dtrOn, boolean rtsOn) {
-                if(mUsbConnetionManager == null) {
+                if(mUsbConnectionManager == null) {
                         return false;
                 }
                 if(DEBUG_SHOW) {
@@ -529,6 +530,16 @@ public class UartFtdi extends SerialCommunicator {
                 mUartConfig.dtrOn = dtrOn;
                 mUartConfig.rtsOn = rtsOn;
                 return true;
+        }
+
+        @Override
+        public boolean setAutoDtr() {
+                UsbSerialDevice serialDevice = UsbSerialDevice.idsToUsbSerialDevice(
+                        mUsbConnectionManager.getVID(),
+                        mUsbConnectionManager.getPID()
+                );
+                Log.d(TAG, "Setting DTR automatically to " + serialDevice.getDtr() + " for VID: " + serialDevice.getVid() + " PID: " + serialDevice.getPid());
+                return setDtrRts(serialDevice.getDtr(), false);
         }
 
         @Override
@@ -587,12 +598,6 @@ public class UartFtdi extends SerialCommunicator {
         }
 
         @Override
-        @Deprecated
-        public void addReadListener(ReadLisener listener) {
-                addReadListener((ReadListener) listener);
-        }
-
-        @Override
         public void clearReadListener() {
                 uartReadListenerList.clear();
         }
@@ -638,5 +643,15 @@ public class UartFtdi extends SerialCommunicator {
         @Override
         public void setDebug(boolean flag) {
                 DEBUG_SHOW = flag;
+        }
+
+        @Override
+        public int getVID() {
+                return mUsbConnectionManager.getVID();
+        }
+
+        @Override
+        public int getPID() {
+                return mUsbConnectionManager.getPID();
         }
 }
