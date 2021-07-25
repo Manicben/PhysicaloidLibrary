@@ -21,18 +21,19 @@ import java.util.Map;
 
 public enum UsbVid {
     UNKNOWN                         (0),
-    ARDUINO                         (0x2341),
-    DCCDUINO                        (0x1A86),
+    ARDUINO                         (0x2341), // arduino.cc (now merged with arduino.org)
+    ARDUINO_1                       (0x2A03), // arduino.org (formerly Smart Projects)
     FTDI                            (0x0403),
+    CP210X                          (0x10C4),
+    DCCDUINO                        (0x1A86),
+    WCH                             (0x4348),
+    SPARKFUN                        (0x1B4F),
+    ADAFRUIT                        (0x239A),
+    RASPBERRY                       (0x2e8a),
     MBED_LPC1768                    (0x0d28),
     MBED_LPC11U24                   (0x0d28),
     MBED_FRDM_KL25Z_OPENSDA_PORT    (0x1357),
-    MBED_FRDM_KL25Z_KL25Z_PORT      (0x15a2),
-    WCH                             (0x4348),
-    CP210X                          (0x10C4),
-    SPARKFUN                        (0x1B4F),
-    ADAFRUIT                        (0x239A),
-    RASPBERRY                       (0x2e8a);
+    MBED_FRDM_KL25Z_KL25Z_PORT      (0x15a2);
 
     private final int vid;
 

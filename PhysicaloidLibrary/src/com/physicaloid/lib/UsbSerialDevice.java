@@ -6,27 +6,32 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
 public enum UsbSerialDevice {
-    UNKNOWN   (UsbVid.UNKNOWN,   0,      Driver.UNKNOWN,  DTR.OFF),
+    UNKNOWN    (UsbVid.UNKNOWN,   0,      Driver.UNKNOWN,  DTR.OFF),
 
-    ARDUINO   (UsbVid.ARDUINO,   0,      Driver.CDCADM,   DTR.OFF),
-    UNO_0     (UsbVid.ARDUINO,   0x0043, Driver.CDCADM,   DTR.OFF),
-    UNO_1     (UsbVid.ARDUINO,   0x0001, Driver.CDCADM,   DTR.OFF),
-    UNO_2     (UsbVid.ARDUINO,   0x0243, Driver.CDCADM,   DTR.OFF),
+    ARDUINO    (UsbVid.ARDUINO,   0,      Driver.CDCADM,   DTR.OFF),
+    UNO_0      (UsbVid.ARDUINO,   0x0043, Driver.CDCADM,   DTR.OFF),
+    UNO_1      (UsbVid.ARDUINO,   0x0001, Driver.CDCADM,   DTR.OFF),
+    UNO_2      (UsbVid.ARDUINO,   0x0243, Driver.CDCADM,   DTR.OFF),
+    UNO_3      (UsbVid.ARDUINO_1, 0x0043, Driver.CDCADM,   DTR.OFF),
+    LEONARDO_0 (UsbVid.ARDUINO,   0x0036, Driver.CDCADM,   DTR.ON ),
+    LEONARDO_1 (UsbVid.ARDUINO,   0x8036, Driver.CDCADM,   DTR.ON ),
+    LEONARDO_2 (UsbVid.ARDUINO_1, 0x0036, Driver.CDCADM,   DTR.ON ),
+    LEONARDO_3 (UsbVid.ARDUINO_1, 0x8036, Driver.CDCADM,   DTR.ON ),
 
-    SPARKFUN  (UsbVid.SPARKFUN,  0,      Driver.CDCADM,   DTR.ON ),
+    FTDI       (UsbVid.FTDI,      0,      Driver.FTDI,     DTR.OFF),
 
-    ADAFRUIT  (UsbVid.ADAFRUIT,  0,      Driver.CDCADM,   DTR.ON ),
+    CP210X     (UsbVid.CP210X,    0,      Driver.CP210X,   DTR.OFF),
 
-    RASPBERRY (UsbVid.RASPBERRY, 0,      Driver.CDCADM,   DTR.ON ),
+    CH341_0    (UsbVid.DCCDUINO,  0x5523, Driver.WINCH34X, DTR.OFF),
+    CH340_0    (UsbVid.DCCDUINO,  0x7523, Driver.WINCH34X, DTR.OFF),
+    CH341_1    (UsbVid.WCH,       0x5523, Driver.WINCH34X, DTR.OFF),
+    CH340_1    (UsbVid.WCH,       0x7523, Driver.WINCH34X, DTR.OFF),
 
-    FTDI      (UsbVid.FTDI,      0,      Driver.FTDI,     DTR.OFF),
+    SPARKFUN   (UsbVid.SPARKFUN,  0,      Driver.CDCADM,   DTR.ON ),
 
-    CP210X    (UsbVid.CP210X,    0,      Driver.CP210X,   DTR.OFF),
+    ADAFRUIT   (UsbVid.ADAFRUIT,  0,      Driver.CDCADM,   DTR.ON ),
 
-    CH341_0   (UsbVid.DCCDUINO,  0x5523, Driver.WINCH34X, DTR.OFF),
-    CH340_0   (UsbVid.DCCDUINO,  0x7523, Driver.WINCH34X, DTR.OFF),
-    CH341_1   (UsbVid.WCH,       0x5523, Driver.WINCH34X, DTR.OFF),
-    CH340_1   (UsbVid.WCH,       0x7523, Driver.WINCH34X, DTR.OFF),
+    RASPBERRY  (UsbVid.RASPBERRY, 0,      Driver.CDCADM,   DTR.ON ),
 
     MBED_LPC1768                 (UsbVid.MBED_LPC1768,                 0, Driver.CDCADM, DTR.OFF),
     MBED_LPC11U24                (UsbVid.MBED_LPC11U24,                0, Driver.CDCADM, DTR.OFF),
@@ -37,7 +42,7 @@ public enum UsbSerialDevice {
     private final int pid;
     private final int driver;
     private final boolean dtr;
-    
+
     UsbSerialDevice(UsbVid vid, int pid, int driver, boolean dtr) {
         this.vid    = vid;
         this.pid    = pid;
