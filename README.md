@@ -1,13 +1,12 @@
-[![Release](https://jitpack.io/v/com.manicben/PhysicaloidLibrary.svg)]
-(https://jitpack.io/#com.manicben/PhysicaloidLibrary)
+[![Release](https://jitpack.io/v/com.manicben/PhysicaloidLibrary.svg)](https://jitpack.io/#com.manicben/PhysicaloidLibrary)
 
 Physicaloid Library
-==================
+===
 
 Android Library for communicating with physical-computing boards (e.g.Arduino, mbed)
 
 Features
------------------
+---
 - **NEW! No closed source slow and buggy D2XX drivers are required.**
 - Android Java library project
 - USB-Serial communication
@@ -32,16 +31,16 @@ You (developer) can include Arduino firmwares in your Android app and upload to 
 
 
 Code example
------------------
+---
 
-### Upload a firmware from Android to Arduino ###
+### Upload a firmware from Android to Arduino
 ```java
 Physicaloid mPhysicaloid = new Physicaloid(this);
 mPhysicaloid.upload(Boards.ARDUINO_UNO, "/sdcard/arduino/Blink.hex");
 ```
 
 
-### Write serial data to Arduino ###
+### Write serial data to Arduino
 ```java
 Physicaloid mPhysicaloid = new Physicaloid(this);
 if(mPhysicaloid.open()) {
@@ -52,7 +51,7 @@ if(mPhysicaloid.open()) {
 ```
 
 
-### Read serial data from Arduino ###
+### Read serial data from Arduino
 ```java
 Physicaloid mPhysicaloid = new Physicaloid(this);
 TextView TextView1 = (TextView) findViewById(R.id.TextView1);// Android TextView
@@ -69,17 +68,25 @@ if(mPhysicaloid.open()) {
 ```
 
 How to use
------------------
-1. File -> import and select a PhysicaloidLibrary directory.
-2. Right click your project -> Properties -> Android -> click Library's "Add" button -> select PhysicaloidLibrary
+---
+```
+    repositories {
+         google()
+         mavenCentral()
+         maven { url "https://jitpack.io" }
+    }
+    dependencies {
+        implementation 'com.manicben:PhysicaloidLibrary:1.0'
+    }
+```
 
 
 Special Thanks
------------------
+---
 This code has built in knowledge of avrdude.
 Thanks to all avrdude coders.
 
 
 License
------------------
+---
 Physicaloid Library is released under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
