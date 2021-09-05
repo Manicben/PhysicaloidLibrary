@@ -1,5 +1,4 @@
-[![Release](https://jitpack.io/v/com.manicben/PhysicaloidLibrary.svg)]
-(https://jitpack.io/#com.manicben/PhysicaloidLibrary)
+[![Release](https://jitpack.io/v/com.manicben/PhysicaloidLibrary.svg)](https://jitpack.io/#com.manicben/PhysicaloidLibrary)
 
 Physicaloid Library
 ===
