@@ -1,2 +1,5 @@
 include ':PhysicaloidLibrary'
-include ':SampleProjects:PhysicaloidTest'
+
+// Excludes Sample app from being built by Jitpack
+if (!System.env.JITPACK)
+    include ':SampleProjects:PhysicaloidTest'

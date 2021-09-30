@@ -65,8 +65,8 @@ task javadoc(type: Javadoc) {
 
 // Build a jar with javadoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
+    archiveClassifier.set('javadoc')
 }
 
 artifacts {
@@ -75,17 +75,14 @@ artifacts {
 }
 
 afterEvaluate {
-    // Avoid publishing any example applications
-    if (!plugins.hasPlugin('com.android.application')) {
-        publishing {
-            publications {
-                // Creates a Maven publication called "release".
-                release(MavenPublication) {
-                    from components.release
-                    groupId = 'com.manicben'
-                    artifactId = 'PhysicaloidLibrary'
-                    version = '1.0'
-                }
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.manicben'
+                artifactId = 'PhysicaloidLibrary'
+                version = '1.0'
             }
         }
     }
