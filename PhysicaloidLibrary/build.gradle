@@ -6,7 +6,7 @@ plugins {
 repositories {
     google()
     mavenCentral()
-    maven { url "https://jitpack.io" }
+    maven { url 'https://jitpack.io' }
 }
 
 group = 'com.manicben'
@@ -44,10 +44,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
-    implementation("com.google.guava:guava:30.1.1-android")
+    implementation('com.google.guava:guava:30.1.1-android')
 }
 
-// build a jar with source files
+// Build a jar with source files
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     archiveClassifier.set('sources')
@@ -58,9 +58,12 @@ task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.sourceFiles
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     classpath += configurations.compile
+
+    exclude "**/R**"
+    exclude "**/BuildConfig*"
 }
 
-// build a jar with javadoc
+// Build a jar with javadoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
     archiveClassifier.set('javadoc')
     from javadoc.destinationDir
@@ -72,14 +75,17 @@ artifacts {
 }
 
 afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                groupId = 'com.manicben'
-                artifactId = 'PhysicaloidLibrary'
-                version = '1.0'
+    // Avoid publishing any example applications
+    if (!plugins.hasPlugin('com.android.application')) {
+        publishing {
+            publications {
+                // Creates a Maven publication called "release".
+                release(MavenPublication) {
+                    from components.release
+                    groupId = 'com.manicben'
+                    artifactId = 'PhysicaloidLibrary'
+                    version = '1.0'
+                }
             }
         }
     }

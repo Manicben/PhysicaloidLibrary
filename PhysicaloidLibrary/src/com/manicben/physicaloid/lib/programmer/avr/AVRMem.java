@@ -102,11 +102,12 @@ public class AVRMem {
             tmpstr += mem[i] + " ";
         }
 
-        // 最初の空白を取り除く
+        // Remove the first whitespace
         while(tmpstr.charAt(0) == ' ') {
             tmpstr = tmpstr.substring(1);
         }
-        str = tmpstr.split("[\\s]+");//空白がいくつあっても1区切りとする
+        // No matter how many spaces there are, it will be separated by one
+        str = tmpstr.split("[\\s]+");
 
         for(int i=0; i<32; i++) {
             if(str[i].charAt(0) == '0') {

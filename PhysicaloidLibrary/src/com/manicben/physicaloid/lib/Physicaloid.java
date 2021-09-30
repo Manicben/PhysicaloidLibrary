@@ -54,7 +54,7 @@ public class Physicaloid {
          * Bluetooth physical connection as a string
          */
         public static final String BLUETOOTH_STRING = "BlueTooth";
-        private static final boolean DEBUG_SHOW = true && BuildConfig.DEBUG;
+        private static final boolean DEBUG_SHOW = BuildConfig.DEBUG;
         private static final String TAG = Physicaloid.class.getSimpleName();
         private Context mContext;
         private Boards mBoard;
@@ -494,7 +494,7 @@ public class Physicaloid {
         }
 
 
-    /**
+        /**
          * Callbacks of program process<br> normal process:<br> onPreUpload() ->
          * onUploading -> onPostUpload<br> cancel:<br> onPreUpload() ->
          * onUploading -> onCancel -> onPostUpload<br> error:<br> onPreUpload

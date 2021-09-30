@@ -1,7 +1,5 @@
 package com.manicben.physicaloid.lib;
 
-import android.util.Log;
-
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 

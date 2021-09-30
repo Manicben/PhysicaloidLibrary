@@ -146,7 +146,7 @@ public abstract class SerialCommunicator {
 
     /**
      * Gets flow control RTS
-     * @reutrn true then RTS on
+     * @return true then RTS on
      */
     abstract public boolean getRts();
 

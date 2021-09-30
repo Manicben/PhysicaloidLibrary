@@ -204,11 +204,11 @@ public class Stk500 extends UploadProtocol{
 
     private static final String TAG = Stk500.class.getSimpleName();
 
-    private static final boolean DEBUG_NOT_SHOW         = true || !BuildConfig.DEBUG;
-    private static final boolean DEBUG_SHOW_SEND        = true && !DEBUG_NOT_SHOW;
-    private static final boolean DEBUG_SHOW_RECV        = true && !DEBUG_NOT_SHOW;
-    private static final boolean DEBUG_SHOW_DRAIN       = true && !DEBUG_NOT_SHOW;
-    private static final boolean DEBUG_SHOW_DUMP_LOGE   = true && !DEBUG_NOT_SHOW;
+    private static final boolean DEBUG_NOT_SHOW         = !BuildConfig.DEBUG;
+    private static final boolean DEBUG_SHOW_SEND        = !DEBUG_NOT_SHOW;
+    private static final boolean DEBUG_SHOW_RECV        = !DEBUG_NOT_SHOW;
+    private static final boolean DEBUG_SHOW_DRAIN       = !DEBUG_NOT_SHOW;
+    private static final boolean DEBUG_SHOW_DUMP_LOGE   = !DEBUG_NOT_SHOW;
 
     SerialCommunicator mComm;
     AvrConf mAVRConf;
@@ -244,7 +244,7 @@ public class Stk500 extends UploadProtocol{
         return retval;
     }
 
-    // タイムアウト型にしないとデータがうまくひろえない場合がある
+    // Data may not be collected properly unless it is set to the timeout type.
     private int recv(byte[] buf, int length) {
         int retval=0;
         int totalRetval=0;
@@ -274,7 +274,7 @@ public class Stk500 extends UploadProtocol{
         return retval;
     }
 
-    // リードバッファをカラにする
+    // Empty the read buffer
     private int drain() {
         byte[] buf = new byte[1];
         int retval = 0;

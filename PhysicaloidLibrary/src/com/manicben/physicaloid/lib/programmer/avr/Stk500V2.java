@@ -34,14 +34,14 @@ import java.util.Arrays;
 public class Stk500V2 extends UploadProtocol {
 
         private static final String TAG = Stk500V2.class.getSimpleName();
-        private static final boolean DEBUG_NOT_SHOW = true || !BuildConfig.DEBUG;
-        private static final boolean DEBUG_SHOW_READ = true && !DEBUG_NOT_SHOW;
-        private static final boolean DEBUG_SHOW_WRITE = true && !DEBUG_NOT_SHOW;
-        private static final boolean DEBUG_SHOW_COMMAND = true && !DEBUG_NOT_SHOW;
-        private static final boolean DEBUG_SHOW_COMMAND_STATUS = true && !DEBUG_NOT_SHOW;
-        private static final boolean DEBUG_SHOW_RECV = true && !DEBUG_NOT_SHOW;
-        private static final boolean DEBUG_SHOW_GETSYNC = true && !DEBUG_NOT_SHOW;
-        private static final boolean DEBUG_SHOW_DRAIN = true && !DEBUG_NOT_SHOW;
+        private static final boolean DEBUG_NOT_SHOW = !BuildConfig.DEBUG;
+        private static final boolean DEBUG_SHOW_READ = !DEBUG_NOT_SHOW;
+        private static final boolean DEBUG_SHOW_WRITE = !DEBUG_NOT_SHOW;
+        private static final boolean DEBUG_SHOW_COMMAND = !DEBUG_NOT_SHOW;
+        private static final boolean DEBUG_SHOW_COMMAND_STATUS = !DEBUG_NOT_SHOW;
+        private static final boolean DEBUG_SHOW_RECV = !DEBUG_NOT_SHOW;
+        private static final boolean DEBUG_SHOW_GETSYNC = !DEBUG_NOT_SHOW;
+        private static final boolean DEBUG_SHOW_DRAIN = !DEBUG_NOT_SHOW;
         private static final int RETRIES = 1; // was 5. Why is it 5?
         // *** XPROG command constants ***
         private static final int CMD_XPROG = 0x50;
@@ -177,7 +177,7 @@ public class Stk500V2 extends UploadProtocol {
                 mCommandSeqNum = 1;
         }
 
-        // リードバッファをカラにする Empty the read buffer
+        // Empty the read buffer
         private int drain() {
                 byte[] buf = new byte[1];
                 int retval = 0;

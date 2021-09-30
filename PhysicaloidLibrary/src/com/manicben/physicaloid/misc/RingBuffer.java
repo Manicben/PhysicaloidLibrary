@@ -16,13 +16,14 @@
 package com.manicben.physicaloid.misc;
 
 import android.util.Log;
+
 import com.manicben.physicaloid.BuildConfig;
 
 public class RingBuffer {
 
         private static final String TAG = RingBuffer.class.getSimpleName();
-        private static final boolean DEBUG_SHOW_ADD = false && BuildConfig.DEBUG;
-        private static final boolean DEBUG_SHOW_GET = false && BuildConfig.DEBUG;
+        private static final boolean DEBUG_SHOW_ADD = BuildConfig.DEBUG;
+        private static final boolean DEBUG_SHOW_GET = BuildConfig.DEBUG;
         private int mRingBufSize;
         private byte[] mRingBuf;
         private int mAddIndex;     // top of data index
@@ -76,12 +77,12 @@ public class RingBuffer {
                         return 0;
                 }
                 if(mAddIndex > mGetIndex) {
-                        if((mAddIndex + length) >= mRingBufSize) {                          // addした結果1周をまたぐ場合
-                                if((mRingBufSize - mAddIndex) + (mGetIndex - 1) < length) {    // 1周をまたいでなおlength以上になる場合
-                                        addLen = (mRingBufSize - mAddIndex) + (mGetIndex - 1);        // 追い抜かないサイズに修正
+                        if((mAddIndex + length) >= mRingBufSize) {                             // When the result of adding straddles one lap
+                                if((mRingBufSize - mAddIndex) + (mGetIndex - 1) < length) {    // When the length is still longer than one lap
+                                        addLen = (mRingBufSize - mAddIndex) + (mGetIndex - 1); // Fixed to a size that does not overtake
                                 }
                         }
-                } else if(mAddIndex < mGetIndex) { // 1周をまたいでいる場合
+                } else if(mAddIndex < mGetIndex) { // When straddling one lap
                         if((mGetIndex - 1) - mAddIndex < length) {
                                 addLen = (mGetIndex - 1) - mAddIndex;
                         }
@@ -91,7 +92,7 @@ public class RingBuffer {
                         addLen = buf.length;
                 }
 
-                if((mAddIndex + addLen) >= mRingBufSize) { // storeがバッファ終端をまたぐ場合
+                if((mAddIndex + addLen) >= mRingBufSize) { // When store straddles the end of the buffer
                         int remain = mAddIndex + addLen - mRingBufSize;
                         int copyLen = addLen - remain;
                         if(copyLen != 0) {
@@ -147,12 +148,12 @@ public class RingBuffer {
                         return 0;
                 }
                 if(mAddIndex > mGetIndex) {
-                        if((mAddIndex + length) >= mRingBufSize) {                          // addした結果1周をまたぐ場合
-                                if((mRingBufSize - mAddIndex) + (mGetIndex - 1) < length) {    // 1周をまたいでなおlength以上になる場合
-                                        addLen = (mRingBufSize - mAddIndex) + (mGetIndex - 1);        // 追い抜かないサイズに修正
+                        if((mAddIndex + length) >= mRingBufSize) {                             // When the result of adding straddles one lap
+                                if((mRingBufSize - mAddIndex) + (mGetIndex - 1) < length) {    // When the length is still longer than one lap
+                                        addLen = (mRingBufSize - mAddIndex) + (mGetIndex - 1); // Fixed to a size that does not overtake
                                 }
                         }
-                } else if(mAddIndex < mGetIndex) { // 1周をまたいでいる場合
+                } else if(mAddIndex < mGetIndex) { // When straddling one lap
                         if((mGetIndex - 1) - mAddIndex < length) {
                                 addLen = (mGetIndex - 1) - mAddIndex;
                         }
@@ -162,7 +163,7 @@ public class RingBuffer {
                         addLen = buf.length;
                 }
 
-                if((mAddIndex + addLen) >= mRingBufSize) { // storeがバッファ終端をまたぐ場合
+                if((mAddIndex + addLen) >= mRingBufSize) { // When store straddles the end of the buffer
                         int remain = mAddIndex + addLen - mRingBufSize;
                         int copyLen = addLen - remain;
                         if(copyLen != 0) {
@@ -219,13 +220,13 @@ public class RingBuffer {
                 int getLen = length;
                 if(mAddIndex == mGetIndex) {
                         return 0;
-                } else if(mGetIndex < mAddIndex) { // 通常
-                        if(mAddIndex - mGetIndex < length) {  // get要求サイズがバッファされているサイズより大きい場合
-                                getLen = mAddIndex - mGetIndex;     // 今バッファされているサイズを返す
+                } else if(mGetIndex < mAddIndex) { // Generally
+                        if(mAddIndex - mGetIndex < length) {    // get request size is larger than the buffered size
+                                getLen = mAddIndex - mGetIndex; // Returns the size currently buffered
                         }
-                } else {// インデックスが1周をまたいでいる場合
-                        if(mAddIndex + (mRingBufSize - mGetIndex) < length) {     // get要求サイズがバッファされているサイズより大きい場合
-                                getLen = mAddIndex + (mRingBufSize - mGetIndex);    // 今バッファされているサイズを返す
+                } else { // When the index spans one lap
+                        if(mAddIndex + (mRingBufSize - mGetIndex) < length) {    // get request size is larger than the buffered size
+                                getLen = mAddIndex + (mRingBufSize - mGetIndex); // Returns the size currently buffered
                         }
                 }
 

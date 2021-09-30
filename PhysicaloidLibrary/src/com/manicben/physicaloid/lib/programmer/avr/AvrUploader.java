@@ -98,17 +98,17 @@ public class AvrUploader {
         mProg.setCallback(callback);
 
         /////////////////////////////////////////////////////////////////
-        // AVRタイプの定数セット  AVR type of constant set
+        // AVR type of constant set
         /////////////////////////////////////////////////////////////////
         try {
-            setConfig(board); // .hexを読む前に実行すること(AVRMemがnewされない)
+            setConfig(board); // Do it before reading .hex (AVRMem is not new)
         } catch(Exception e) {
             if(callback != null){ callback.onError(UploadErrors.AVR_CHIPTYPE); }
             return false;
         }
 
         /////////////////////////////////////////////////////////////////
-        // ファイル読み込み File read
+        // File read
         /////////////////////////////////////////////////////////////////
         try {
             getFileToBuf(hexFile);
@@ -120,7 +120,7 @@ public class AvrUploader {
         }
 
         /////////////////////////////////////////////////////////////////
-        // 書込みスタート  Writing start
+        // Writing start
         /////////////////////////////////////////////////////////////////
         mProg.setConfig(mAVRConf, mAVRMem);
         mProg.open();

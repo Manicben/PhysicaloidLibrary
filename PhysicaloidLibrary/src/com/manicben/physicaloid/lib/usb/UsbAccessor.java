@@ -35,7 +35,7 @@ import com.manicben.physicaloid.BuildConfig;
 public enum UsbAccessor {
     INSTANCE;   // enum singleton
 
-    private static final boolean DEBUG_SHOW = true && BuildConfig.DEBUG;
+    private static final boolean DEBUG_SHOW = BuildConfig.DEBUG;
 
     private static final String TAG = UsbAccessor.class.getSimpleName();
 
