@@ -1,4 +1,5 @@
 [![Release](https://jitpack.io/v/com.manicben/PhysicaloidLibrary.svg)](https://jitpack.io/#com.manicben/PhysicaloidLibrary)
+[![Javadoc](https://img.shields.io/badge/javadoc-1.0.0-blue)](https://javadoc.jitpack.io/com/manicben/PhysicaloidLibrary/1.0.0/javadoc/)
 
 Physicaloid Library
 ===
@@ -7,7 +8,9 @@ Android Library for communicating with physical-computing boards (e.g.Arduino, m
 
 Features
 ---
-- **NEW! No closed source slow and buggy D2XX drivers are required.**
+- **NEW! Available to import directly into your project via Jitpack!**
+- **NEW! Now supports more microcontrollers over USB, such as the ATmega32U4 and RP2040.**
+- No closed source slow and buggy D2XX drivers are required.
 - Android Java library project
 - USB-Serial communication
 - WiFi-Serial communication to ESP8266
@@ -75,8 +78,9 @@ How to use
          mavenCentral()
          maven { url "https://jitpack.io" }
     }
+    
     dependencies {
-        implementation 'com.manicben:PhysicaloidLibrary:1.0'
+        implementation 'com.manicben:PhysicaloidLibrary:1.0.0'
     }
 ```
 
