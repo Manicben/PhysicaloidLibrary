@@ -10,7 +10,7 @@ repositories {
 }
 
 group = 'com.manicben'
-version = '1.0'
+version = '1.0.0'
 
 android {
     compileSdkVersion 30
@@ -49,40 +49,63 @@ dependencies {
 
 // Build a jar with source files
 task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
     archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
 }
 
 task javadoc(type: Javadoc) {
-    failOnError false
-    source = android.sourceSets.main.java.sourceFiles
+    failOnError = false
+    source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += configurations.compile
+    android.libraryVariants.all { variant ->
+        if (variant.name == 'release') {
+            owner.classpath += variant.javaCompileProvider.get().classpath
+        }
+    }
 
     exclude "**/R**"
     exclude "**/BuildConfig*"
+
+    options.encoding 'utf-8'
+    options {
+        addStringOption 'docencoding', 'utf-8'
+        addStringOption 'charset', 'utf-8'
+        links 'https://docs.oracle.com/javase/7/docs/api/'
+        links 'https://d.android.com/reference'
+        links 'https://developer.android.com/reference/androidx/'
+    }
 }
 
 // Build a jar with javadoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    from javadoc.destinationDir
     archiveClassifier.set('javadoc')
-}
+    from javadoc.destinationDir
 
-artifacts {
-    archives sourcesJar
-    archives javadocJar
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
 }
 
 afterEvaluate {
+    // fixes issue where javadoc can't find android symbols ref: http://stackoverflow.com/a/34572606
+    javadoc.classpath += files(android.libraryVariants.collect { variant ->
+        variant.javaCompileProvider.get().classpath.files
+    })
+
     publishing {
         publications {
             // Creates a Maven publication called "release".
             release(MavenPublication) {
                 from components.release
+
+                artifact sourcesJar
+                artifact javadocJar
+
                 groupId = 'com.manicben'
                 artifactId = 'PhysicaloidLibrary'
-                version = '1.0'
+                version = '1.0.0'
             }
         }
     }

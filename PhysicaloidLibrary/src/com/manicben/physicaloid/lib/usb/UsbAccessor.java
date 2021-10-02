@@ -140,7 +140,7 @@ public enum UsbAccessor {
 
     /**
      * Gets UsbDeviceConnection by a hierarchy device number
-     * @param devNum hierarchy device number
+     * @param ch connection channel
      * @return UsbDeviceConnection or null
      */
     public UsbDeviceConnection connection(int ch) {
@@ -222,8 +222,8 @@ public enum UsbAccessor {
 
     /**
      * Gets devNum device's VID
-     * @param devNum
-     * @return
+     * @param devNum Device number
+     * @return VID
      */
     public int getVid(int devNum) {
         UsbDevice dev = device(devNum);
@@ -233,8 +233,8 @@ public enum UsbAccessor {
 
     /**
      * Gets devNum device's PID
-     * @param devNum
-     * @return
+     * @param devNum Device number
+     * @return PID
      */
     public int getPid(int devNum) {
         UsbDevice dev = device(devNum);
@@ -244,8 +244,8 @@ public enum UsbAccessor {
 
     /**
      * Gets devNum device's SerialID
-     * @param devNum
-     * @return
+     * @param devNum Device number
+     * @return Serial ID
      */
     public String getSerial(int devNum) {
         if(connection(devNum) == null) return "";
@@ -255,7 +255,7 @@ public enum UsbAccessor {
     /**
      * Gets an USB permission if no permission
      *
-     * @param device
+     * @param device USB device to get permission for
      */
     public void getPermission(UsbDevice device) {
         if(mManager == null) return;

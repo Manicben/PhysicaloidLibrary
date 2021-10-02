@@ -6,7 +6,7 @@ import com.manicben.physicaloid.lib.Physicaloid;
 
 public class PhysicaloidFpga extends Physicaloid {
     @SuppressWarnings("unused")
-    private static final boolean DEBUG_SHOW = false && BuildConfig.DEBUG;
+    private static final boolean DEBUG_SHOW = BuildConfig.DEBUG;
     @SuppressWarnings("unused")
     private static final String TAG = PhysicaloidFpga.class.getSimpleName();
 

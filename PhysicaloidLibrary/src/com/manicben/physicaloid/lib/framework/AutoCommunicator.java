@@ -22,7 +22,6 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.manicben.physicaloid.lib.UsbSerialDevice;
-import com.manicben.physicaloid.lib.UsbVid;
 import com.manicben.physicaloid.lib.bluetooth.driver.uart.UartBluetooth;
 import com.manicben.physicaloid.lib.usb.UsbAccessor;
 import com.manicben.physicaloid.lib.usb.driver.uart.UartCdcAcm;

@@ -24,11 +24,10 @@ import android.hardware.usb.UsbInterface;
 import android.util.Log;
 import android.util.SparseArray;
 import com.manicben.physicaloid.BuildConfig;
-import com.manicben.physicaloid.lib.UsbSerialDevice;
 
 public class UsbCdcConnection {
 
-        private static final boolean DEBUG_SHOW = true && BuildConfig.DEBUG;
+        private static final boolean DEBUG_SHOW = BuildConfig.DEBUG;
         private static final String TAG = UsbCdcConnection.class.getSimpleName();
         private UsbAccessor mUsbAccess;
         private int mCdcAcmInterfaceNum;
@@ -77,8 +76,9 @@ public class UsbCdcConnection {
         /**
          * Open channel-th device with VID and PID
          *
-         * @param ids vid and pid
-         * @param ch  channel
+         * @param ids      vid and pid
+         * @param isCdcAcm true then search only cdc-acm
+         * @param ch       channel
          *
          * @return true : open successful, false : open fail
          */
@@ -161,6 +161,8 @@ public class UsbCdcConnection {
 
         /**
          * Closes devices
+         *
+         * @return true : close successful, false : close fail
          */
         public boolean close() {
                 mUsbConnectionEp.clear();

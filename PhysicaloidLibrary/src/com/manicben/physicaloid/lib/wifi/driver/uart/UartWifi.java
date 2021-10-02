@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import com.manicben.physicaloid.BuildConfig;
 import com.manicben.physicaloid.lib.Physicaloid;
-import com.manicben.physicaloid.lib.UsbSerialDevice;
 import com.manicben.physicaloid.lib.framework.SerialCommunicator;
 import com.manicben.physicaloid.lib.usb.driver.uart.ReadListener;
 import com.manicben.physicaloid.lib.usb.driver.uart.UartConfig;
@@ -30,7 +29,7 @@ import java.util.List;
 public class UartWifi extends SerialCommunicator {
 
         private static final String TAG = UartWifi.class.getSimpleName();
-        private boolean DEBUG_SHOW = false;
+        private boolean DEBUG_SHOW = BuildConfig.DEBUG;
         private static final int DEFAULT_BAUDRATE = 9600;
         private UartConfig mUartConfig;
         private static final int RING_BUFFER_SIZE = 1024;

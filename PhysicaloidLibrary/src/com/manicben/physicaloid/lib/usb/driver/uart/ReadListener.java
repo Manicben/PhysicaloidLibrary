@@ -17,5 +17,5 @@
 package com.manicben.physicaloid.lib.usb.driver.uart;
 
 public interface ReadListener {
-    public void onRead(int size);
+    void onRead(int size);
 }

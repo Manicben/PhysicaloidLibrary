@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class PhysicaloidFpgaConfigurator {
 
-    private static final boolean DEBUG_SHOW = true && BuildConfig.DEBUG;
+    private static final boolean DEBUG_SHOW = BuildConfig.DEBUG;
     private static final String TAG = PhysicaloidFpgaConfigurator.class.getSimpleName();
 
     private SerialCommunicator mSerial;

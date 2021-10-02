@@ -6,7 +6,7 @@ import com.manicben.physicaloid.lib.framework.SerialCommunicator;
 
 public class PhysicaloidFpgaPacketFilter {
     @SuppressWarnings("unused")
-    private static final boolean DEBUG_SHOW = false && BuildConfig.DEBUG;
+    private static final boolean DEBUG_SHOW = BuildConfig.DEBUG;
     private static final String TAG = PhysicaloidFpgaPacketFilter.class.getSimpleName();
 
     public int writeWithEscape(SerialCommunicator comm, byte[] buf, int size) {

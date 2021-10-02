@@ -41,7 +41,7 @@ import java.io.InputStream;
 public class AvrUploader {
     private static final String TAG = AvrUploader.class.getSimpleName();
 
-    private static final boolean DEBUG_SHOW_HEXDUMP = false && BuildConfig.DEBUG;
+    private static final boolean DEBUG_SHOW_HEXDUMP = BuildConfig.DEBUG;
 
     private UploadProtocol      mProg;
     private SerialCommunicator  mComm;

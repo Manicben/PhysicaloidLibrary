@@ -223,7 +223,7 @@ public class Physicaloid {
         /**
          * Reads from a device
          *
-         * @param buf
+         * @param buf buffer to read into
          * @return read byte size
          * @throws RuntimeException
          */
@@ -237,8 +237,8 @@ public class Physicaloid {
         /**
          * Reads from a device
          *
-         * @param buf
-         * @param size
+         * @param buf buffer to read into
+         * @param size size of buffer
          * @return read byte size
          * @throws RuntimeException
          */
@@ -288,7 +288,7 @@ public class Physicaloid {
         /**
          * Writes to a device.
          *
-         * @param buf
+         * @param buf buffer to write
          * @return written byte size
          * @throws RuntimeException
          */
@@ -302,8 +302,8 @@ public class Physicaloid {
         /**
          * Writes to a device.
          *
-         * @param buf
-         * @param size
+         * @param buf buffer to write
+         * @param size size of buffer
          * @return written byte size
          * @throws RuntimeException
          */
@@ -334,7 +334,7 @@ public class Physicaloid {
          *
          * @param board board profile e.g. Boards.ARDUINO_UNO
          * @param filePath a binary file path e.g. /sdcard/arduino/Blink.uno.hex
-         * @param callback
+         * @param callback Upload callback
          * @throws RuntimeException
          */
         public void upload(Boards board, String filePath, UploadCallBack callback) throws RuntimeException {
@@ -386,7 +386,7 @@ public class Physicaloid {
          * @param board board profile e.g. Boards.ARDUINO_UNO
          * @param fileStream a binary stream e.g.
          * getResources().getAssets().open("Blink.uno.hex")
-         * @param callback
+         * @param callback Upload callback
          * @throws RuntimeException
          */
         public void upload(Boards board, InputStream fileStream, UploadCallBack callback) throws RuntimeException {
@@ -537,7 +537,7 @@ public class Physicaloid {
         /**
          * Sets Serial Configuration
          *
-         * @param settings
+         * @param settings Uart settings
          */
         public void setConfig(UartConfig settings) throws RuntimeException {
                 synchronized(LOCK) {
