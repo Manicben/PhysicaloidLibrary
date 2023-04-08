@@ -31,6 +31,8 @@ public enum UsbSerialDevice {
 
     RASPBERRY  (UsbVid.RASPBERRY, 0,      Driver.CDCADM,   DTR.ON ),
 
+    XIAO_RP2040 (UsbVid.SEEEDUINO, 0x0042, Driver.CDCADM, DTR.ON),
+
     MBED_LPC1768                 (UsbVid.MBED_LPC1768,                 0, Driver.CDCADM, DTR.OFF),
     MBED_LPC11U24                (UsbVid.MBED_LPC11U24,                0, Driver.CDCADM, DTR.OFF),
     MBED_FRDM_KL25Z_OPENSDA_PORT (UsbVid.MBED_FRDM_KL25Z_OPENSDA_PORT, 0, Driver.CDCADM, DTR.OFF),

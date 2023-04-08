@@ -30,6 +30,7 @@ public enum UsbVid {
     SPARKFUN                        (0x1B4F),
     ADAFRUIT                        (0x239A),
     RASPBERRY                       (0x2e8a),
+    SEEEDUINO                       (0x2886),
     MBED_LPC1768                    (0x0d28),
     MBED_LPC11U24                   (0x0d28),
     MBED_FRDM_KL25Z_OPENSDA_PORT    (0x1357),
