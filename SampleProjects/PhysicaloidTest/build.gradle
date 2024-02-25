@@ -5,11 +5,14 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 30
+    namespace 'com.manicben.physicaloidtest'
+
+    compileSdk 33
 
     defaultConfig {
+        applicationId 'com.manicben.physicaloidtest'
         minSdkVersion 12
-        targetSdkVersion 30
+        targetSdkVersion 33
     }
 
     sourceSets {
