@@ -1,5 +1,5 @@
 [![Release](https://jitpack.io/v/com.manicben/PhysicaloidLibrary.svg)](https://jitpack.io/#com.manicben/PhysicaloidLibrary)
-[![Javadoc](https://img.shields.io/badge/javadoc-1.0.0-blue)](https://javadoc.jitpack.io/com/manicben/PhysicaloidLibrary/1.0.0/javadoc/)
+[![Javadoc](https://img.shields.io/badge/javadoc-1.1.1-blue)](https://javadoc.jitpack.io/com/manicben/PhysicaloidLibrary/1.1.1/javadoc/)
 
 Physicaloid Library
 ===
